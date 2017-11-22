@@ -1,6 +1,6 @@
 """
 ===========================
-The slidercrank problem
+ArduinoArm stimulation
 ===========================
 
 """
