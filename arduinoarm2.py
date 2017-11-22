@@ -12,7 +12,8 @@ import scipy.integrate as integrate
 import matplotlib.animation as animation
 from sympy import *
 from numpy.linalg import inv, pinv
-
+from tempfile import TemporaryFile
+outfile_abcd = TemporaryFile()
 
 def init():
     line.set_data([], [])
@@ -172,6 +173,10 @@ if __name__ == "__main__":
         #  # print(y2)
         #   # print(x2)
         #   # print(y2)
+    np.save('outfile_a',a)
+    np.save('outfile_b',b)
+    np.save('outfile_c',c)
+    np.save('outfile_d',d)
     fig = plt.figure(1)
     ax = fig.add_subplot(111, autoscale_on=False, xlim=(-150, 150), ylim=(-150, 150))
     ax.set_aspect('equal')
