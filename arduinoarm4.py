@@ -20,18 +20,23 @@ outfile_abcd = TemporaryFile()
 offseta= [98,78,74,84]
 
 def init():
+    #for line in lines:
     line.set_data([], [])
+    #line2.set_data([], [])
     time_text.set_text('')
-    return line, time_text
+    return line, time_text#, line2
 
 
 def animate(i):
     thisx = [0, x1[i], x2[i], x3[i], x4[i]]
     thisy = [0, y1[i], y2[i], y3[i], y4[i]]
-
+    #ln.set_data(trax[i],tray[i])
+    
     line.set_data(thisx, thisy)
+    #line[2].set_data(trax,tray)
+    #line2.set_data(trax[i],tray[i])
     time_text.set_text(time_template % (i * dt))
-    return line, time_text
+    return line, time_text#, line2
 
 
 if __name__ == "__main__":
@@ -85,8 +90,10 @@ if __name__ == "__main__":
     y3 = np.zeros(2*Num)
     x4 = np.zeros(2*Num)
     y4 = np.zeros(2*Num)
+    trax =np.zeros(2*Num)
+    tray =np.zeros(2*Num)
     time = np.linspace(0.0, 2*td, 2*Num + 1)
-    G1 = 0.5
+    G1 = 1.0
     G2 = 0.2
     # Initial Conditions
     a[0] = 5*np.pi/8
@@ -96,11 +103,11 @@ if __name__ == "__main__":
 
     # Trajatory
     t = time
-    xt = 2*t + 10
+    xt = 2*t + 50
     yt = 80 #+ np.zeros(Num)
     xt2 = -3*t+120
     yt2= 80 #+ np.zeros(Num)
-    xtdot = 3
+    xtdot = 2
     xt2dot=-3
     ytdot = 0
     # rd=np.array([[xt],[yt]])
@@ -146,7 +153,10 @@ if __name__ == "__main__":
         #print(rdot1[j])
         h11 = rdot1[j] + G1 * (rd1[j][k] - pos1)
         h12 = rdot2 + G1 * (rd2 - pos2)
-        h1 = np.array([[h11], [h12]])
+        h1 = np.array([[h11], [h12]])	
+	trax[i]=rd1[j][k]
+	tray[i]=rd2
+	
 
         h2 = G2 * (-oriv)
         J1test = np.array([[-120, -80, -80, -40], [40, 40, 0, 0]])
@@ -199,6 +209,8 @@ if __name__ == "__main__":
     ax.grid()
     #
     line, = ax.plot([], [], 'o-', lw=2)
+    #N=2
+    #lines = [ax.plot([], [])[0] for _ in range(N)]
     time_template = 'time = %.1fs'
     time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
     #
@@ -215,28 +227,36 @@ if __name__ == "__main__":
     plt.ylabel("theta1 in rad")
 
     plt.figure(3)
-    print(len(time))
-    print(len(a))
+    #print(len(time))
+    #print(len(a))
     plt.plot(time, np.degrees(bb))
     plt.suptitle("output angle2 plot ")
     plt.xlabel("time")
     plt.ylabel("theta2 in rad")
 
     plt.figure(4)
-    print(len(time))
-    print(len(a))
+    #print(len(time))
+    #print(len(a))
     plt.plot(time, np.degrees(cc))
     plt.suptitle("output angle3 plot ")
     plt.xlabel("time")
     plt.ylabel("theta3 in rad")
 
     plt.figure(5)
-    print(len(time))
-    print(len(a))
+    #print(len(time))
+    #print(len(a))
     plt.plot(time, np.degrees(dd))
     plt.suptitle("output angle4 plot ")
     plt.xlabel("time")
     plt.ylabel("theta4 in rad")
+    
+    plt.figure(6)
+    #print(len(time))
+    #print(len(a))
+    plt.scatter(trax, tray)
+    plt.suptitle("trajetory plot ")
+    plt.xlabel("x")
+    plt.ylabel("y")
     #
     #
     #   plt.figure(3)
