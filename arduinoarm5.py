@@ -14,6 +14,7 @@ from sympy import *
 from numpy.linalg import inv, pinv
 from tempfile import TemporaryFile
 import yaml
+import time as ctimer
 outfile_abcd = TemporaryFile()
 
 #offsetangle from actual arm
@@ -40,6 +41,7 @@ def animate(i):
 
 
 if __name__ == "__main__":
+    time0=ctimer.time()
     # Linkage Length
     L = 40
     L1= 90
@@ -124,8 +126,10 @@ if __name__ == "__main__":
 
     # print(rd1)
     I4 = np.array([[1., 0., 0., 0.], [0., 1., 0., 0.], [0., 0., 1., 0.], [0., 0., 0., 1.]])
-
+    time1=ctimer.time()
+    print("time 1 is : %s" %(time1-time0))
     for i in range(0, 2*Num):
+	time2=ctimer.time()
         if i>Num:
             j=1
             k=i-Num
@@ -142,7 +146,7 @@ if __name__ == "__main__":
         J16v = J16.subs([(A, a[i]), (B, b[i]), (C, c[i]), (D, d[i])])
         J17v = J17.subs([(A, a[i]), (B, b[i]), (C, c[i]), (D, d[i])])
         J18v = J18.subs([(A, a[i]), (B, b[i]), (C, c[i]), (D, d[i])])
-
+        time3=ctimer.time()
         J1v = np.array([[J11v, J12v, J13v, J14v], [J15v, J16v, J17v, J18v]])
         # End effector location
 
@@ -187,7 +191,10 @@ if __name__ == "__main__":
         y3[i] = L * sin(a[i] + b[i] + c[i]) + y2[i]
         x4[i] = L * cos(a[i] + b[i] + c[i] + d[i]) + x3[i]
         y4[i] = L * sin(a[i] + b[i] + c[i] + d[i]) + y3[i]
-
+        time4= ctimer.time()
+	print("loop time is : %s" %(time4-time2))
+	print("selected loop time is : %s " %(time3-time2)) 
+	print("percentage : %s " %((time3-time2)/(time4-time2)))
         #  # print(y2)
         #   # print(x2)
         #   # print(y2)
